@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💗 Mohit ❤️ Sonu Ji 💗</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    height:100vh;
+    background:linear-gradient(135deg,#ffd6e0,#fff0f5,#ffe6f0);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    text-align:center;
+    font-family:'Poppins',sans-serif;
+  }
+  h1{
+    color:#c2185b;
+    font-size:2em;
+    margin:20px;
+    opacity:0;
+    transition:opacity 1.5s ease;
+    text-shadow:0 0 15px #ffc1d6;
+  }
+  @keyframes fadeIn {from{opacity:0;} to{opacity:1;}}
+
+  /* Heart Rain */
+  .heart{
+    position:absolute;width:15px;height:15px;
+    background:#ff4d6d;transform:rotate(45deg);
+    animation:fall 6s linear infinite;
+  }
+  .heart::before,.heart::after{
+    content:'';position:absolute;width:15px;height:15px;
+    background:#ff4d6d;border-radius:50%;
+  }
+  .heart::before{top:-7.5px;left:0;}
+  .heart::after{left:7.5px;top:0;}
+  @keyframes fall{
+    0%{top:-10%;opacity:1;}
+    100%{top:110%;opacity:0;}
+  }
+
+  #finalMsg{
+    display:none;color:#ad1457;
+    font-size:2.3em;
+    animation:glow 2s ease-in-out infinite alternate;
+  }
+  @keyframes glow{
+    from{text-shadow:0 0 10px #ffc1d6;}
+    to{text-shadow:0 0 25px #ff4d6d,0 0 50px #ffb3c6;}
+  }
+
+  .puzzle{
+    display:none;
+    margin-top:30px;
+  }
+  .puzzle button{
+    background:#ff80a6;color:white;
+    padding:10px 20px;
+    margin:5px;border:none;
+    border-radius:15px;cursor:pointer;
+  }
+  .puzzle button:hover{background:#ff4d6d;}
+
+  #playBtn{
+    padding:15px 30px;
+    background:#ff4d6d;border:none;color:white;
+    font-size:1.2em;border-radius:50px;cursor:pointer;
+    box-shadow:0 0 25px rgba(255,0,100,0.4);
+  }
+  #playBtn:hover{background:#ff80a6;transform:scale(1.1);}
+</style>
+</head>
+<body>
+
+<button id="playBtn">🎵 Play Music & Start Story</button>
+<h1 id="text"></h1>
+
+<div class="puzzle" id="puzzle">
+  <h1>🧩 Sonu Ji! Mohit का दिल कौन-सा है? 💗</h1>
+  <div id="options"></div>
+</div>
+
+<h1 id="finalMsg">💖 तुम हो... मेरी ज़िंदगी की सबसे खूबसूरत कहानी 💖<br>— मोहिट ❤️ सोनू जी 💞</h1>
+
+<audio id="bgMusic" loop>
+  <source src="Tum Ho Toh Saiyaara 320 Kbps.mp3" type="audio/mp3">
+</audio>
+
+<script>
+const lines=[
+  "Sonu... tum meri jaan ho 🩷",
+  "Main tere bina nahi reh sakta... 🤌🏻🥺",
+  "Jab se tum meri zindagi me aayi ho, sab kuch accha lagta hai ☺️",
+  "Tum bahut acche ho aur bahut pyaare bhi 🥹",
+  "Har din sirf tumse baat karne ka mann karta hai 💞",
+  "Tum meri duniya ho, meri muskurahat ho 💫",
+  "Mujhe tumpe fakhra hai Sonu Ji 💗",
+  "Aur hamesha rahega... because you are my heart ❤️"
+];
+
+const text=document.getElementById("text");
+const music=document.getElementById("bgMusic");
+const playBtn=document.getElementById("playBtn");
+const puzzle=document.getElementById("puzzle");
+const finalMsg=document.getElementById("finalMsg");
+
+function showLine(i=0){
+  if(i>=lines.length){setTimeout(()=>{puzzle.style.display="block";createPuzzle();},3000);return;}
+  text.style.opacity=0;
+  setTimeout(()=>{
+    text.textContent=lines[i];
+    text.style.opacity=1;
+    setTimeout(()=>showLine(i+1),5000);
+  },1000);
+}
+
+// Heart Rain
+function makeHeart(){
+  const h=document.createElement("div");
+  h.classList.add("heart");
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
+setInterval(makeHeart,200);
+
+// Puzzle
+function createPuzzle(){
+  const options=document.getElementById("options");
+  for(let i=0;i<4;i++){
+    let btn=document.createElement("button");
+    btn.textContent=i===2?"❤️":"💔";
+    btn.onclick=()=>choose(i);
+    options.appendChild(btn);
+  }
+}
+function choose(index){
+  if(index===2){
+    puzzle.style.display="none";
+    finalMsg.style.display="block";
+    for(let i=0;i<40;i++) setTimeout(makeHeart,i*100);
+  } else {
+    alert("Nahi Sonu Ji 💋 fir se try karo!");
+  }
+}
+
+// Music start button
+playBtn.addEventListener("click",()=>{
+  playBtn.style.display="none";
+  music.play().catch(err=>console.log("Music blocked:",err));
+  showLine();
+});
+</script>
+</body>
+</html>
